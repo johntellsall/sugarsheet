@@ -1,6 +1,7 @@
 from __future__ import print_function
 import pickle
 import os.path
+import pprint
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -39,8 +40,27 @@ def get_creds():
 def get_sheet():
     creds = get_creds()
     service = build("sheets", "v4", credentials=creds)
-
     return service.spreadsheets()
+
+
+def append():
+    sheet = get_sheet()
+    # result = (
+    #     sheet.batchUpdate()
+    #     .get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME)
+    #     .execute()
+    # )
+    body = {
+        # How the input data should be interpreted.
+        "value_input_option": "",  # TODO: Update placeholder value.
+        # The new values to apply to the spreadsheet.
+        "data": [],  # TODO: Update placeholder value.
+        # TODO: Add desired entries to the request body.
+    }
+
+    request = sheet.values().batchUpdate(spreadsheetId=SAMPLE_SPREADSHEET_ID, body=body)
+    response = request.execute()
+    return response
 
 
 def view():
