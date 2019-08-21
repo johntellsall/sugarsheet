@@ -36,29 +36,29 @@ def get_creds():
     return creds
 
 
-def main():
+def get_sheet():
     creds = get_creds()
     service = build("sheets", "v4", credentials=creds)
 
-    # Call the Sheets API
-    sheet = service.spreadsheets()
+    return service.spreadsheets()
+
+
+def view():
+    sheet = get_sheet()
     result = (
         sheet.values()
         .get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME)
         .execute()
     )
     values = result.get("values", [])
-    import ipdb
-
-    ipdb.set_trace()
     if not values:
         print("No data found.")
     else:
         print("Name, Major:")
         for row in values:
             # Print columns A and E, which correspond to indices 0 and 4.
-            print("%s, %s" % (row[0], row[4]))
+            print(row)
 
 
 if __name__ == "__main__":
-    main()
+    view()
